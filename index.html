@@ -31,6 +31,7 @@
     --border:rgba(24,66,62,0.14);
     --border-strong:rgba(24,66,62,0.26);
     --shadow-soft:0 1px 2px rgba(43,33,29,0.06), 0 8px 24px -12px rgba(43,33,29,0.18);
+    --shadow-phone:0 30px 60px -24px rgba(24,10,14,0.5), 0 10px 24px -12px rgba(24,10,14,0.35);
     --hero-gradient:linear-gradient(120deg,#6E3A4E 0%,#C05E78 55%,#E08A5E 100%);
   }
   @media (prefers-color-scheme: dark){
@@ -50,6 +51,7 @@
       --border:rgba(255,255,255,0.12);
       --border-strong:rgba(255,255,255,0.22);
       --shadow-soft:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+      --shadow-phone:0 30px 60px -24px rgba(0,0,0,0.7), 0 10px 24px -12px rgba(0,0,0,0.5);
     }
   }
   :root[data-theme="dark"]{
@@ -68,6 +70,7 @@
     --border:rgba(255,255,255,0.12);
     --border-strong:rgba(255,255,255,0.22);
     --shadow-soft:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    --shadow-phone:0 30px 60px -24px rgba(0,0,0,0.7), 0 10px 24px -12px rgba(0,0,0,0.5);
   }
 
   *{box-sizing:border-box;}
@@ -80,6 +83,7 @@
     font-size:16px;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
   img{max-width:100%;display:block;}
   a{color:inherit;}
@@ -100,6 +104,20 @@
     display:inline-flex;
     align-items:center;
     gap:.5rem;
+  }
+
+  /* ---------- Reveal-on-scroll: progressive enhancement ----------
+     Default state is fully visible (no JS / motion-reduced users always
+     see everything). Only once script.js confirms motion is OK does it
+     stamp <html class="js-anim">, which is what actually hides .reveal
+     elements before they scroll into view. So a JS failure or a user
+     with prefers-reduced-motion never leaves content stuck invisible. */
+  .reveal{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.16,.8,.3,1), transform .7s cubic-bezier(.16,.8,.3,1);}
+  .js-anim .reveal{opacity:0;transform:translateY(28px);}
+  .js-anim .reveal.is-visible{opacity:1;transform:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
   }
 
   /* ---------- NAV ---------- */
@@ -128,38 +146,53 @@
     transition:transform .15s ease;
   }
   .nav-cta:hover{transform:translateY(-1px);}
-  @media (prefers-reduced-motion: reduce){ .nav-cta{transition:none;} }
 
   /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;}
+  .hero .glow{
+    position:absolute; z-index:0; border-radius:50%;
+    background:radial-gradient(circle, color-mix(in srgb, var(--coral) 30%, transparent), transparent 70%);
+    filter:blur(10px);
+    animation:drift 16s ease-in-out infinite;
+  }
+  .hero .glow.g1{width:520px;height:520px;top:-220px;right:-160px;}
+  .hero .glow.g2{width:380px;height:380px;bottom:-200px;left:-140px;
+    background:radial-gradient(circle, color-mix(in srgb, var(--rose) 26%, transparent), transparent 70%);
+    animation-delay:-8s;}
+  @keyframes drift{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-22px,26px) scale(1.06); }
+  }
+
   .hero .wrap{
+    position:relative; z-index:1;
     display:grid;
     grid-template-columns:1.05fr 0.85fr;
     gap:clamp(2rem,4vw,3.5rem);
     align-items:center;
   }
-  .hero-art{
-    justify-self:center;
-    background:var(--hero-gradient);
-    border-radius:32px;
-    padding:2.4rem;
-    box-shadow:var(--shadow-soft);
-    width:min(360px,100%);
+
+  .hero-copy .eyebrow, .hero-copy h1, .hero-copy p.lede, .hero-copy .trust-chip, .hero-copy .store-row{
+    animation:heroUp .8s cubic-bezier(.16,.8,.3,1) both;
   }
-  .hero-art img{width:100%;border-radius:20px;}
+  .hero-copy .eyebrow{animation-delay:.05s;}
+  .hero-copy h1{animation-delay:.15s;}
+  .hero-copy p.lede{animation-delay:.28s;}
+  .hero-copy .trust-chip{animation-delay:.4s;}
+  .hero-copy .store-row{animation-delay:.52s;}
+  @keyframes heroUp{
+    from{opacity:0; transform:translateY(18px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
   .hero h1{
     font-size:clamp(2rem,1.35rem + 2.6vw,3rem);
     font-weight:600;
     line-height:1.08;
   }
-  .hero h1 em{
-    font-style:italic; font-weight:600; color:var(--coral);
-  }
-  .hero p.lede{
-    margin:1.1rem 0 0;
-    font-size:1.08rem;
-    color:var(--ink-soft);
-    max-width:44ch;
-  }
+  .hero h1 em{font-style:italic; font-weight:600; color:var(--coral);}
+  .hero p.lede{margin:1.1rem 0 0; font-size:1.08rem; color:var(--ink-soft); max-width:44ch;}
+
   .trust-chip{
     display:inline-flex; align-items:center; gap:.5rem;
     margin-top:1.4rem;
@@ -182,12 +215,16 @@
     color:var(--ink);
     text-decoration:none;
     font:700 .88rem/1.15 'Nunito',sans-serif;
-    transition:border-color .15s ease, transform .15s ease;
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
   }
   .store-btn:hover{transform:translateY(-1px);}
   .store-btn svg{flex:none;width:22px;height:22px;color:var(--teal);}
   .store-btn .label small{display:block;font-weight:600;color:var(--ink-faint);font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;}
-  .store-btn.is-native{border-color:var(--coral);box-shadow:0 0 0 3px color-mix(in srgb, var(--coral) 16%, transparent);}
+  .store-btn.is-native{border-color:var(--coral); animation:pulseGlow 2.4s ease-in-out infinite;}
+  @keyframes pulseGlow{
+    0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--coral) 26%, transparent); }
+    50%{ box-shadow:0 0 0 8px color-mix(in srgb, var(--coral) 0%, transparent); }
+  }
   .soon-tag{
     margin-left:.15rem;
     font:800 .62rem/1 'Nunito',sans-serif;
@@ -195,56 +232,98 @@
     background:var(--surface-sunken); color:var(--ink-faint);
     padding:.3rem .5rem; border-radius:100px;
   }
-  @media (prefers-reduced-motion: reduce){ .store-btn{transition:none;} }
+
+  /* ---------- PHONE MOCKUP (shared: hero + showcase) ---------- */
+  .phone-stage{justify-self:center; perspective:1200px;}
+  .phone{
+    position:relative;
+    width:min(272px,68vw);
+    aspect-ratio:9/19.3;
+    background:linear-gradient(160deg,#241a1d,#0f0a0c);
+    border-radius:44px;
+    padding:12px;
+    box-shadow:var(--shadow-phone);
+    animation:floaty 5.5s ease-in-out infinite;
+  }
+  .phone::after{
+    content:'';
+    position:absolute; top:22px; left:50%; transform:translateX(-50%);
+    width:34%; height:20px; border-radius:100px;
+    background:#0f0a0c;
+    z-index:2;
+  }
+  @keyframes floaty{
+    0%,100%{ transform:translateY(0) rotate(-1.2deg); }
+    50%{ transform:translateY(-14px) rotate(1deg); }
+  }
+  .phone-screen{
+    position:relative; width:100%; height:100%;
+    border-radius:32px; overflow:hidden;
+    background:#000;
+  }
+  .phone-screen .shot{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:top center;
+    opacity:0; transition:opacity 1s ease;
+  }
+  .phone-screen .shot.active{opacity:1;}
+
+  .phone.feature-phone{width:min(240px,58vw); animation:none;}
 
   @media (max-width:860px){
     .hero .wrap{grid-template-columns:1fr; text-align:center;}
     .hero p.lede{max-width:none; margin-inline:auto;}
     .store-row{justify-content:center;}
     .trust-chip{margin-inline:auto;}
+    .phone-stage{margin-top:1rem;}
   }
 
-  /* ---------- JOURNEY / PATH ---------- */
-  .journey{background:var(--surface);border-block:1px solid var(--border);}
-  .journey h2{font-size:clamp(1.5rem,1.2rem + 1.2vw,2.1rem);font-weight:600;margin-top:.5rem;max-width:22ch;}
-  .journey-path{
+  /* ---------- SHOWCASE (zig-zag feature rows w/ real screens) ---------- */
+  .showcase{background:var(--surface); border-block:1px solid var(--border);}
+  .showcase-head{max-width:38ch;}
+  .showcase-head h2{font-size:clamp(1.5rem,1.2rem + 1.2vw,2.1rem); font-weight:600; margin-top:.5rem;}
+
+  .zig{
     position:relative;
+    margin-top:clamp(2.5rem,4vw,3.5rem);
     display:flex;
-    gap:1.5rem;
-    margin-top:3rem;
+    flex-direction:column;
+    gap:clamp(3rem,6vw,4.5rem);
   }
-  .journey-path::before{
+  .zig::before{
     content:'';
-    position:absolute;
-    top:1.35rem; left:10%; right:10%;
-    height:2px;
-    background:linear-gradient(90deg, var(--border-strong), var(--coral), var(--border-strong));
-    z-index:0;
+    position:absolute; top:8px; bottom:8px; left:27px;
+    width:2px;
+    background:linear-gradient(180deg, var(--border-strong), var(--coral), var(--border-strong));
   }
-  .journey-step{
+  .zig-row{
+    position:relative;
+    display:grid;
+    grid-template-columns:56px 1fr 1fr;
+    gap:clamp(1.25rem,3vw,2.5rem);
+    align-items:center;
+  }
+  .zig-row:nth-child(even) .zig-media{order:3;}
+  .zig-row:nth-child(even) .zig-text{order:2;}
+  .zig-num{
     position:relative; z-index:1;
-    flex:1;
-    display:flex; flex-direction:column; align-items:center;
-    text-align:center;
-    gap:.85rem;
-  }
-  .journey-step .num{
-    width:2.7rem;height:2.7rem;border-radius:50%;
+    width:54px;height:54px;border-radius:50%;
     display:grid;place-items:center;
-    background:var(--teal);color:var(--bg);
-    font:800 1.05rem/1 'Nunito',sans-serif;
+    background:var(--teal); color:var(--bg);
+    font:800 1.15rem/1 'Nunito',sans-serif;
     box-shadow:var(--shadow-soft);
-    flex:none;
   }
-  .journey-step h3{font-size:1.05rem;font-weight:700;}
-  .journey-step p{margin:0;font-size:.9rem;color:var(--ink-soft);max-width:26ch;}
+  .zig-media{display:flex; justify-content:center;}
+  .zig-text h3{font-size:1.4rem; font-weight:700; color:var(--teal);}
+  .zig-text p{margin:.7rem 0 0; color:var(--ink-soft); font-size:1rem; max-width:38ch;}
 
-  @media (max-width:860px){
-    .journey-path{flex-direction:column;align-items:flex-start;gap:2.1rem;}
-    .journey-path::before{top:1.35rem;bottom:1.35rem;left:1.35rem;right:auto;width:2px;height:auto;
-      background:linear-gradient(180deg, var(--border-strong), var(--coral), var(--border-strong));}
-    .journey-step{flex-direction:row;text-align:left;align-items:flex-start;}
-    .journey-step p{max-width:none;}
+  @media (max-width:760px){
+    .zig::before{left:23px;}
+    .zig-row{grid-template-columns:44px 1fr; }
+    .zig-row .zig-media{grid-column:2; order:1 !important;}
+    .zig-row .zig-text{grid-column:2; order:2 !important;}
+    .zig-num{width:44px;height:44px;font-size:1rem;}
+    .zig-text p{max-width:none;}
   }
 
   /* ---------- TRUST / PRIVACY ---------- */
@@ -268,10 +347,7 @@
   .trust-panel h2{font-size:1.6rem;font-weight:600;max-width:16ch;}
   .fact-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1.15rem;}
   .fact-list li{display:flex;gap:.9rem;align-items:flex-start;}
-  .fact-list .dot{
-    flex:none;width:.55rem;height:.55rem;border-radius:50%;
-    background:var(--green);margin-top:.55rem;
-  }
+  .fact-list .dot{flex:none;width:.55rem;height:.55rem;border-radius:50%;background:var(--green);margin-top:.55rem;}
   .fact-list b{display:block;font-size:.95rem;color:var(--ink);}
   .fact-list span{font-size:.88rem;color:var(--ink-soft);}
   .trust-link{
@@ -280,11 +356,10 @@
     font:800 .85rem/1 'Nunito',sans-serif;
     color:var(--teal-soft);text-decoration:none;
   }
-  .trust-link svg{width:14px;height:14px;}
+  .trust-link svg{width:14px;height:14px; transition:transform .2s ease;}
+  .trust-link:hover svg{transform:translateX(3px);}
 
-  @media (max-width:760px){
-    .trust-panel{grid-template-columns:1fr;}
-  }
+  @media (max-width:760px){ .trust-panel{grid-template-columns:1fr;} }
 
   /* ---------- DISCLAIMER / ATTRIBUTION ---------- */
   .attribution{text-align:center;}
@@ -293,63 +368,40 @@
     font:italic 500 1.15rem/1.55 'Fraunces',serif;
     color:var(--teal);
   }
-  .attribution .byline{
-    margin-top:1.5rem;
-    font-size:.85rem;
-    color:var(--ink-faint);
-    max-width:46ch;
-    margin-inline:auto;
-  }
+  .attribution .byline{margin-top:1.5rem; font-size:.85rem; color:var(--ink-faint); max-width:46ch; margin-inline:auto;}
 
   /* ---------- DOWNLOAD BAND ---------- */
   .download-section{padding-top:0;}
   .download{
-    background:var(--teal);
-    color:var(--bg);
+    background:var(--teal); color:var(--bg);
     border-radius:32px;
     padding:clamp(2.25rem,4vw,3.5rem);
     text-align:center;
+    position:relative; overflow:hidden;
   }
-  .download-inner{max-width:640px;margin:0 auto;}
+  .download-inner{position:relative; z-index:1; max-width:640px;margin:0 auto;}
   .download h2{color:var(--bg);font-size:clamp(1.5rem,1.2rem + 1.2vw,2.1rem);font-weight:600;}
   .download p{color:color-mix(in srgb, var(--bg) 78%, transparent);margin-top:.75rem;}
   .download .store-row{justify-content:center;}
   .download .store-btn{background:color-mix(in srgb, var(--teal) 40%, var(--bg) 12%);border-color:color-mix(in srgb, var(--bg) 30%, transparent);color:var(--bg);}
   .download .store-btn svg{color:var(--bg);}
   .download .soon-tag{background:color-mix(in srgb, var(--bg) 18%, transparent);color:var(--bg);}
-  .download .store-btn.is-native{border-color:var(--coral);box-shadow:0 0 0 3px color-mix(in srgb, var(--coral) 30%, transparent);}
+  .download .store-btn.is-native{border-color:var(--coral);}
 
   /* ---------- FOOTER ---------- */
   footer{border-top:1px solid var(--border);}
-  footer .wrap{
-    padding-block:2.75rem;
-    display:grid;
-    grid-template-columns:1.3fr 1fr 1fr;
-    gap:2rem;
-  }
+  footer .wrap{padding-block:2.75rem; display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:2rem;}
   .foot-brand{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;}
   .foot-brand img{width:28px;}
   .foot-brand span{font-family:'Fraunces',serif;font-style:italic;font-weight:600;color:var(--teal);font-size:1.05rem;}
   footer p{color:var(--ink-faint);font-size:.85rem;max-width:32ch;margin:0;}
-  footer h4{
-    font:800 .78rem/1 'Nunito',sans-serif;
-    letter-spacing:.05em;text-transform:uppercase;
-    color:var(--ink-faint);margin:0 0 .9rem;
-  }
+  footer h4{font:800 .78rem/1 'Nunito',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 .9rem;}
   footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem;}
   footer a{text-decoration:none;font-size:.92rem;color:var(--ink-soft);display:inline-flex;align-items:center;gap:.45rem;}
   footer a:hover{color:var(--coral);}
   footer a svg{width:15px;height:15px;flex:none;}
-  .copyright{
-    border-top:1px solid var(--border);
-    padding-block:1.25rem;
-    text-align:center;
-    font-size:.78rem;
-    color:var(--ink-faint);
-  }
-  @media (max-width:720px){
-    footer .wrap{grid-template-columns:1fr;}
-  }
+  .copyright{border-top:1px solid var(--border);padding-block:1.25rem;text-align:center;font-size:.78rem;color:var(--ink-faint);}
+  @media (max-width:720px){ footer .wrap{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
@@ -367,8 +419,10 @@
 <main id="top">
 
   <section class="hero">
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
     <div class="wrap">
-      <div>
+      <div class="hero-copy">
         <span class="eyebrow">0–6 Yaş · Ebeveynler İçin</span>
         <h1>Çocuğunuzun gelişim yolculuğunu <em>birlikte</em> izleyin.</h1>
         <p class="lede">
@@ -390,41 +444,90 @@
           </a>
         </div>
       </div>
-      <div class="hero-art">
-        <img src="assets/logo-hero.png" alt="Gelişim Dünyası logosu: gökkuşağı bulmaca parçasına uzanan bir çocuk figürü">
+      <div class="phone-stage">
+        <div class="phone" aria-hidden="true">
+          <div class="phone-screen" id="heroShots">
+            <img class="shot" src="assets/screens/basamaklar.jpg" alt="">
+            <img class="shot" src="assets/screens/gozlem.jpg" alt="">
+            <img class="shot" src="assets/screens/oyun.jpg" alt="">
+            <img class="shot" src="assets/screens/acilis.jpg" alt="">
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="journey" id="ozellikler">
+  <section class="showcase" id="ozellikler">
     <div class="wrap">
-      <span class="eyebrow">Uygulamanın Rotası</span>
-      <h2>Beş adımda, tek bir rehber.</h2>
-      <div class="journey-path">
-        <div class="journey-step">
-          <div class="num">1</div>
-          <h3>Gelişim Basamakları</h3>
-          <p>Doğumdan 6 yaşa kadar 9 gelişim alanında, ayına özel kontrol noktalarını işaretleyin.</p>
+      <div class="showcase-head reveal">
+        <span class="eyebrow">Uygulamanın Rotası</span>
+        <h2>Beş adımda, tek bir rehber.</h2>
+      </div>
+
+      <div class="zig">
+        <div class="zig-row reveal">
+          <div class="zig-num">1</div>
+          <div class="zig-media">
+            <div class="phone feature-phone">
+              <div class="phone-screen"><img class="shot active" src="assets/screens/basamaklar.jpg" alt="Gelişim Dünyası uygulamasında Gelişim Basamakları ekranı: yaşa göre kontrol noktaları ve renkli ilerleme çubuğu"></div>
+            </div>
+          </div>
+          <div class="zig-text">
+            <h3>Gelişim Basamakları</h3>
+            <p>Doğumdan 6 yaşa kadar 9 gelişim alanında, ayına özel kontrol noktalarını işaretleyin.</p>
+          </div>
         </div>
-        <div class="journey-step">
-          <div class="num">2</div>
-          <h3>Gözlem Rehberi</h3>
-          <p>24 maddelik gözlem listesiyle dikkat çeken durumları alanlara göre gruplayıp yorumlayın.</p>
+
+        <div class="zig-row reveal">
+          <div class="zig-num">2</div>
+          <div class="zig-media">
+            <div class="phone feature-phone">
+              <div class="phone-screen"><img class="shot active" src="assets/screens/gozlem.jpg" alt="Gözlem Rehberi ekranı: işaretlenebilir gözlem maddeleri listesi"></div>
+            </div>
+          </div>
+          <div class="zig-text">
+            <h3>Gözlem Rehberi</h3>
+            <p>24 maddelik gözlem listesiyle dikkat çeken durumları alanlara göre gruplayıp yorumlayın.</p>
+          </div>
         </div>
-        <div class="journey-step">
-          <div class="num">3</div>
-          <h3>Ebeveyn Tutumları</h3>
-          <p>28 soruluk "Kendimi Değerlendir" testiyle 6 tutumdan size en yakın olanı görün.</p>
+
+        <div class="zig-row reveal">
+          <div class="zig-num">3</div>
+          <div class="zig-media">
+            <div class="phone feature-phone">
+              <div class="phone-screen"><img class="shot active" src="assets/screens/tutumlar.jpg" alt="Ebeveyn Tutumları ekranı: altı ebeveynlik tutumu listesi"></div>
+            </div>
+          </div>
+          <div class="zig-text">
+            <h3>Ebeveyn Tutumları</h3>
+            <p>28 soruluk "Kendimi Değerlendir" testiyle 6 tutumdan size en yakın olanı görün.</p>
+          </div>
         </div>
-        <div class="journey-step">
-          <div class="num">4</div>
-          <h3>Oyun Önerileri</h3>
-          <p>Yaşa uygun yüzlerce oyun fikri arasından güvenlik notlarıyla birlikte ilham alın.</p>
+
+        <div class="zig-row reveal">
+          <div class="zig-num">4</div>
+          <div class="zig-media">
+            <div class="phone feature-phone">
+              <div class="phone-screen"><img class="shot active" src="assets/screens/oyun.jpg" alt="Oyun Önerileri ekranı: yaşa uygun bir oyun önerisi ve güvenlik notu"></div>
+            </div>
+          </div>
+          <div class="zig-text">
+            <h3>Oyun Önerileri</h3>
+            <p>Yaşa uygun yüzlerce oyun fikri arasından güvenlik notlarıyla birlikte ilham alın.</p>
+          </div>
         </div>
-        <div class="journey-step">
-          <div class="num">5</div>
-          <h3>Gelişim Dosyası</h3>
-          <p>Kaydettiğiniz bulguları tek bir PDF'te birleştirip istediğiniz kanaldan paylaşın.</p>
+
+        <div class="zig-row reveal">
+          <div class="zig-num">5</div>
+          <div class="zig-media">
+            <div class="phone feature-phone">
+              <div class="phone-screen"><img class="shot active" src="assets/screens/dosya.jpg" alt="Gelişim Dosyası ekranı: PDF oluşturma ve paylaşma seçenekleri"></div>
+            </div>
+          </div>
+          <div class="zig-text">
+            <h3>Gelişim Dosyası</h3>
+            <p>Kaydettiğiniz bulguları tek bir PDF'te birleştirip istediğiniz kanaldan paylaşın.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -432,7 +535,7 @@
 
   <section id="gizlilik">
     <div class="wrap">
-      <div class="trust-panel">
+      <div class="trust-panel reveal">
         <div>
           <div class="lockmark">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
@@ -454,7 +557,7 @@
           </li>
         </ul>
       </div>
-      <a class="trust-link" href="gizlilik-politikasi.html">
+      <a class="trust-link reveal" href="gizlilik-politikasi.html">
         Gizlilik Politikasının tamamı
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
       </a>
@@ -463,12 +566,12 @@
 
   <section class="attribution">
     <div class="wrap">
-      <blockquote>
+      <blockquote class="reveal">
         "Gelişim Dünyası bir tanı aracı değildir; maddeler kesin ölçüt değildir,
         her çocuk kendi hızında gelişir. Endişeniz varsa uygulamanın sonucu ne
         olursa olsun bir uzmana başvurun."
       </blockquote>
-      <p class="byline">
+      <p class="byline reveal">
         İçerik, Çocuk Gelişimci Büşra Saykın tarafından erken çocukluk gelişimi
         literatürüne dayanarak özgün olarak hazırlanmıştır.
         © Çocuk Gelişimci Büşra Saykın — tüm hakları saklıdır.
@@ -478,7 +581,7 @@
 
   <section class="download-section">
     <div class="wrap">
-      <div class="download">
+      <div class="download reveal">
         <div class="download-inner">
           <h2>Uygulama mağaza incelemesi için hazırlanıyor.</h2>
           <p>Yayınlandığında bu sayfa otomatik güncellenecek — cihazınıza uygun mağazayı aşağıdan takip edebilirsiniz.</p>
@@ -557,6 +660,39 @@
       btn.classList.add('is-native');
     }
   });
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Hero phone: crossfades through a few real screenshots. Skipped
+  // entirely for reduced-motion users (first shot just stays put).
+  var heroShots = document.querySelectorAll('#heroShots .shot');
+  if (heroShots.length) {
+    heroShots[0].classList.add('active');
+    if (!reduceMotion) {
+      var i = 0;
+      setInterval(function () {
+        heroShots[i].classList.remove('active');
+        i = (i + 1) % heroShots.length;
+        heroShots[i].classList.add('active');
+      }, 3200);
+    }
+  }
+
+  // Scroll reveal: only enabled (via the js-anim class) when the visitor
+  // hasn't asked for reduced motion. See the .reveal CSS comment above.
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('js-anim');
+    var targets = document.querySelectorAll('.reveal');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(function (el) { io.observe(el); });
+  }
 })();
 </script>
 
