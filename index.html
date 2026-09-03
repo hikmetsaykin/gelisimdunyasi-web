@@ -238,7 +238,10 @@
   .phone{
     position:relative;
     width:min(272px,68vw);
-    aspect-ratio:9/19.3;
+    /* Gerçek ekran görüntüleriyle (1080x1920, 9:16) BİREBİR aynı oran -
+       aksi halde object-fit:cover, çerçeve daha uzun/dar olduğu için
+       görüntüyü gereğinden çok büyütüp sağ/sol kenarlardan metni kırpıyordu. */
+    aspect-ratio:9/16;
     background:linear-gradient(160deg,#241a1d,#0f0a0c);
     border-radius:44px;
     padding:12px;
