@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gizlilik Politikası — Gelişim Dünyası</title>
+<meta name="description" content="Gelişim Dünyası uygulamasının Gizlilik Politikası.">
+<link rel="icon" type="image/png" href="assets/mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF3EC; --surface:#FFFFFF; --surface-sunken:#F3E7DC;
+    --ink:#2B211D; --ink-soft:#6B5A52; --ink-faint:#9C8B81;
+    --teal:#18423E; --teal-soft:#3E6560; --coral:#D65A3F; --green:#0C8F6C;
+    --border:rgba(24,66,62,0.14); --border-strong:rgba(24,66,62,0.26);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1B1512; --surface:#241C18; --surface-sunken:#2D2320;
+      --ink:#F3E9E1; --ink-soft:#C7B7AC; --ink-faint:#8F7C71;
+      --teal:#7FD6C7; --teal-soft:#5FAFA2; --coral:#FF8A66; --green:#4FDCA8;
+      --border:rgba(255,255,255,0.12); --border-strong:rgba(255,255,255,0.22);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1B1512; --surface:#241C18; --surface-sunken:#2D2320;
+    --ink:#F3E9E1; --ink-soft:#C7B7AC; --ink-faint:#8F7C71;
+    --teal:#7FD6C7; --teal-soft:#5FAFA2; --coral:#FF8A66; --green:#4FDCA8;
+    --border:rgba(255,255,255,0.12); --border-strong:rgba(255,255,255,0.22);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding-inline:1.5rem;}
+  a{color:inherit;}
+
+  .nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb, var(--bg) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;padding-block:.85rem;max-width:900px;}
+  .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+  .brand img{width:30px;}
+  .brand span{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1.05rem;color:var(--teal);}
+  .back{font:700 .85rem/1 'Nunito',sans-serif;color:var(--teal-soft);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;}
+  .back svg{width:14px;height:14px;}
+
+  .doc-head{padding-block:clamp(2rem,4vw,3rem) 1rem;}
+  .eyebrow{font:800 .78rem/1 'Nunito',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);}
+  h1{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(1.7rem,1.3rem + 1.6vw,2.3rem);margin:.6rem 0 0;color:var(--teal);text-wrap:balance;}
+  .updated{margin-top:.6rem;font-size:.85rem;color:var(--ink-faint);}
+
+  article{padding-block:1rem 4rem;}
+  article > p.intro{
+    font-size:1.02rem;color:var(--ink-soft);
+    background:var(--surface-sunken);border:1px solid var(--border);
+    border-radius:16px;padding:1.1rem 1.3rem;margin:0 0 2rem;
+  }
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;color:var(--teal);margin:2.2rem 0 .8rem;}
+  section p{margin:0 0 .9rem;color:var(--ink);max-width:65ch;}
+  section ul{margin:0 0 .9rem;padding-left:0;list-style:none;max-width:65ch;}
+  section li{position:relative;padding-left:1.3rem;margin-bottom:.55rem;color:var(--ink);}
+  section li::before{content:'';position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--coral);}
+  strong{color:var(--teal);}
+  .contact-card{
+    display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;
+    background:var(--surface-sunken);border:1px solid var(--border);
+    border-radius:16px;padding:1.1rem 1.3rem;margin-top:.5rem;
+  }
+  .contact-card a{display:inline-flex;align-items:center;gap:.5rem;font:700 .9rem/1 'Nunito',sans-serif;color:var(--teal-soft);text-decoration:none;}
+  .contact-card svg{width:16px;height:16px;flex:none;}
+
+  footer{border-top:1px solid var(--border);}
+  footer .wrap{padding-block:2rem;display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;max-width:900px;}
+  footer a{font-size:.85rem;color:var(--ink-soft);text-decoration:none;}
+  footer a:hover{color:var(--coral);}
+  .copyright{font-size:.78rem;color:var(--ink-faint);}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img src="assets/mark.png" alt="">
+      <span>Gelişim Dünyası</span>
+    </a>
+    <a class="back" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+      Ana Sayfa
+    </a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="doc-head">
+    <span class="eyebrow">Yasal</span>
+    <h1>Gizlilik Politikası</h1>
+    <p class="updated">Son güncelleme: Eylül 2026</p>
+  </div>
+
+  <article>
+    <p class="intro">
+      Kısaca: Bu uygulama hiçbir veriyi toplamaz, sunucuya göndermez ve
+      üçüncü kişilerle paylaşmaz. Girdiğiniz her şey yalnızca sizin
+      cihazınızda kalır.
+    </p>
+
+    <section>
+      <h2>Hangi veriler işleniyor?</h2>
+      <p>Uygulamayı kullanırken şunları siz girersiniz:</p>
+      <ul>
+        <li>Çocuğunuzun adı (veya takma adı) ve doğum tarihi,</li>
+        <li>Gelişim basamaklarına yaptığınız işaretlemeler,</li>
+        <li>Gözlem Rehberi'nde işaretlediğiniz maddeler,</li>
+        <li>Ebeveyn tutumu değerlendirmesindeki yanıtlarınız.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Bu veriler nereye gidiyor?</h2>
+      <p>
+        Hiçbir yere. Tüm bu bilgiler cihazınızın kendi depolama alanındaki
+        bir veritabanında saklanır.
+      </p>
+      <ul>
+        <li>Uygulamanın internet erişim izni YOKTUR; teknik olarak veri gönderemez.</li>
+        <li>Analitik, reklam, çökme raporlama gibi hiçbir üçüncü taraf bileşen kullanılmaz.</li>
+        <li>Veriler bulut yedeklemesine dahil edilmez.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Kim erişebilir?</h2>
+      <p>
+        Yalnızca cihazınızı kullanan kişi. Uygulama sahibi dahil hiç kimse
+        bu verilere erişemez.
+      </p>
+    </section>
+
+    <section>
+      <h2>Paylaşım tamamen sizin kontrolünüzde</h2>
+      <p>
+        Uygulama içinden bir PDF rapor oluşturup paylaşmayı seçerseniz, bu
+        paylaşımı siz başlatırsınız ve dosyanın nereye gideceğine
+        (WhatsApp, e-posta, kayıt vb.) siz karar verirsiniz. Bu durumda
+        paylaştığınız içerik artık ilgili uygulamanın/kişinin
+        sorumluluğundadır.
+      </p>
+      <p>
+        Aynı şekilde "Uzmana Danış" bağlantıları sizi Instagram veya
+        WhatsApp'a yönlendirir; oradaki yazışmalar ilgili platformun
+        gizlilik politikasına tabidir.
+      </p>
+    </section>
+
+    <section>
+      <h2>Bildirimler</h2>
+      <p>
+        Günlük oyun önerisi hatırlatması için cihazınızın bildirim izni
+        istenir. Bu bildirimler tamamen cihazınızda oluşturulur; hiçbir
+        sunucu kullanılmaz. İzni istediğiniz zaman cihaz ayarlarından
+        kapatabilirsiniz.
+      </p>
+    </section>
+
+    <section>
+      <h2>Verilerinizi silme</h2>
+      <p>
+        Bir çocuk profilini uygulamadan sildiğinizde, o profile ait tüm
+        kayıtlar cihazınızdan kalıcı olarak silinir. Uygulamayı
+        kaldırdığınızda ise tüm veriler cihazınızdan tamamen kaldırılır.
+      </p>
+    </section>
+
+    <section>
+      <h2>Çocuklara ilişkin veriler</h2>
+      <p>
+        Uygulama ebeveynler tarafından kullanılmak üzere tasarlanmıştır;
+        çocuklar doğrudan kullanıcı değildir. Çocuğa ait bilgileri
+        uygulamaya ebeveyn girer ve bu bilgiler cihazdan hiç çıkmaz.
+      </p>
+    </section>
+
+    <section>
+      <h2>İletişim</h2>
+      <p>Gizlilikle ilgili sorularınız için bize ulaşabilirsiniz:</p>
+      <div class="contact-card">
+        <a href="mailto:info@gelisimdunyasi.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+          info@gelisimdunyasi.com
+        </a>
+        <a href="https://www.instagram.com/gelisimdunyasi__/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1"></circle></svg>
+          @gelisimdunyasi__
+        </a>
+      </div>
+    </section>
+  </article>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">Gelişim Dünyası</a>
+    <a href="kullanim-sartlari.html">Kullanım Şartları</a>
+    <span class="copyright">© 2026 Çocuk Gelişimci Büşra Saykın</span>
+  </div>
+</footer>
+
+</body>
+</html>

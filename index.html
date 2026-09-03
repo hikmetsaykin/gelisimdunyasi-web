@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gelişim Dünyası</title>
+<meta name="description" content="0-6 yaş çocuklar için ebeveynlere yönelik, tamamen çevrimdışı gelişim takip ve rehberlik uygulaması. Gelişim basamakları, gözlem rehberi, ebeveyn tutumları ve yaşa uygun oyun önerileri tek bir yerde.">
+<meta property="og:title" content="Gelişim Dünyası — Çocuğunuzun gelişim yolculuğu">
+<meta property="og:description" content="Gelişim basamaklarını, gözlemlerinizi ve ebeveynlik tutumunuzu tek bir yerde, tamamen cihazınızda tutan rehber uygulama.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gelisimdunyasi.com/">
+<meta property="og:image" content="https://gelisimdunyasi.com/assets/logo-hero.png">
+<link rel="icon" type="image/png" href="assets/mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900;1,500;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF3EC;
+    --surface:#FFFFFF;
+    --surface-sunken:#F3E7DC;
+    --ink:#2B211D;
+    --ink-soft:#6B5A52;
+    --ink-faint:#9C8B81;
+    --teal:#18423E;
+    --teal-soft:#3E6560;
+    --coral:#D65A3F;
+    --coral-ink:#FFFFFF;
+    --green:#0C8F6C;
+    --rose:#B85468;
+    --border:rgba(24,66,62,0.14);
+    --border-strong:rgba(24,66,62,0.26);
+    --shadow-soft:0 1px 2px rgba(43,33,29,0.06), 0 8px 24px -12px rgba(43,33,29,0.18);
+    --hero-gradient:linear-gradient(120deg,#6E3A4E 0%,#C05E78 55%,#E08A5E 100%);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1B1512;
+      --surface:#241C18;
+      --surface-sunken:#2D2320;
+      --ink:#F3E9E1;
+      --ink-soft:#C7B7AC;
+      --ink-faint:#8F7C71;
+      --teal:#7FD6C7;
+      --teal-soft:#5FAFA2;
+      --coral:#FF8A66;
+      --coral-ink:#241209;
+      --green:#4FDCA8;
+      --rose:#E79CAC;
+      --border:rgba(255,255,255,0.12);
+      --border-strong:rgba(255,255,255,0.22);
+      --shadow-soft:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1B1512;
+    --surface:#241C18;
+    --surface-sunken:#2D2320;
+    --ink:#F3E9E1;
+    --ink-soft:#C7B7AC;
+    --ink-faint:#8F7C71;
+    --teal:#7FD6C7;
+    --teal-soft:#5FAFA2;
+    --coral:#FF8A66;
+    --coral-ink:#241209;
+    --green:#4FDCA8;
+    --rose:#E79CAC;
+    --border:rgba(255,255,255,0.12);
+    --border-strong:rgba(255,255,255,0.22);
+    --shadow-soft:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  h1,h2,h3{
+    font-family:'Fraunces',Georgia,serif;
+    text-wrap:balance;
+    margin:0;
+    color:var(--teal);
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding-inline:1.5rem;}
+  section{padding-block:clamp(3rem,4vw + 1rem,5.5rem);}
+
+  .eyebrow{
+    font:800 0.8rem/1 'Nunito',sans-serif;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--coral);
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:.85rem;
+  }
+  .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;}
+  .brand img{width:34px;height:auto;}
+  .brand span{
+    font-family:'Fraunces',serif; font-style:italic; font-weight:600;
+    font-size:1.2rem; color:var(--teal);
+  }
+  .nav-cta{
+    font:800 .85rem/1 'Nunito',sans-serif;
+    background:var(--teal); color:var(--bg);
+    padding:.65rem 1.1rem; border-radius:100px;
+    text-decoration:none;
+    box-shadow:var(--shadow-soft);
+    transition:transform .15s ease;
+  }
+  .nav-cta:hover{transform:translateY(-1px);}
+  @media (prefers-reduced-motion: reduce){ .nav-cta{transition:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.05fr 0.85fr;
+    gap:clamp(2rem,4vw,3.5rem);
+    align-items:center;
+  }
+  .hero-art{
+    justify-self:center;
+    background:var(--hero-gradient);
+    border-radius:32px;
+    padding:2.4rem;
+    box-shadow:var(--shadow-soft);
+    width:min(360px,100%);
+  }
+  .hero-art img{width:100%;border-radius:20px;}
+  .hero h1{
+    font-size:clamp(2rem,1.35rem + 2.6vw,3rem);
+    font-weight:600;
+    line-height:1.08;
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:600; color:var(--coral);
+  }
+  .hero p.lede{
+    margin:1.1rem 0 0;
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    max-width:44ch;
+  }
+  .trust-chip{
+    display:inline-flex; align-items:center; gap:.5rem;
+    margin-top:1.4rem;
+    padding:.5rem .9rem;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:100px;
+    font:700 .82rem/1 'Nunito',sans-serif;
+    color:var(--teal-soft);
+  }
+  .trust-chip svg{flex:none;width:15px;height:15px;color:var(--green);}
+
+  .store-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.75rem;}
+  .store-btn{
+    display:inline-flex; align-items:center; gap:.6rem;
+    padding:.8rem 1.15rem;
+    border-radius:16px;
+    border:1.5px solid var(--border-strong);
+    background:var(--surface);
+    color:var(--ink);
+    text-decoration:none;
+    font:700 .88rem/1.15 'Nunito',sans-serif;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .store-btn:hover{transform:translateY(-1px);}
+  .store-btn svg{flex:none;width:22px;height:22px;color:var(--teal);}
+  .store-btn .label small{display:block;font-weight:600;color:var(--ink-faint);font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;}
+  .store-btn.is-native{border-color:var(--coral);box-shadow:0 0 0 3px color-mix(in srgb, var(--coral) 16%, transparent);}
+  .soon-tag{
+    margin-left:.15rem;
+    font:800 .62rem/1 'Nunito',sans-serif;
+    letter-spacing:.05em; text-transform:uppercase;
+    background:var(--surface-sunken); color:var(--ink-faint);
+    padding:.3rem .5rem; border-radius:100px;
+  }
+  @media (prefers-reduced-motion: reduce){ .store-btn{transition:none;} }
+
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr; text-align:center;}
+    .hero p.lede{max-width:none; margin-inline:auto;}
+    .store-row{justify-content:center;}
+    .trust-chip{margin-inline:auto;}
+  }
+
+  /* ---------- JOURNEY / PATH ---------- */
+  .journey{background:var(--surface);border-block:1px solid var(--border);}
+  .journey h2{font-size:clamp(1.5rem,1.2rem + 1.2vw,2.1rem);font-weight:600;margin-top:.5rem;max-width:22ch;}
+  .journey-path{
+    position:relative;
+    display:flex;
+    gap:1.5rem;
+    margin-top:3rem;
+  }
+  .journey-path::before{
+    content:'';
+    position:absolute;
+    top:1.35rem; left:10%; right:10%;
+    height:2px;
+    background:linear-gradient(90deg, var(--border-strong), var(--coral), var(--border-strong));
+    z-index:0;
+  }
+  .journey-step{
+    position:relative; z-index:1;
+    flex:1;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center;
+    gap:.85rem;
+  }
+  .journey-step .num{
+    width:2.7rem;height:2.7rem;border-radius:50%;
+    display:grid;place-items:center;
+    background:var(--teal);color:var(--bg);
+    font:800 1.05rem/1 'Nunito',sans-serif;
+    box-shadow:var(--shadow-soft);
+    flex:none;
+  }
+  .journey-step h3{font-size:1.05rem;font-weight:700;}
+  .journey-step p{margin:0;font-size:.9rem;color:var(--ink-soft);max-width:26ch;}
+
+  @media (max-width:860px){
+    .journey-path{flex-direction:column;align-items:flex-start;gap:2.1rem;}
+    .journey-path::before{top:1.35rem;bottom:1.35rem;left:1.35rem;right:auto;width:2px;height:auto;
+      background:linear-gradient(180deg, var(--border-strong), var(--coral), var(--border-strong));}
+    .journey-step{flex-direction:row;text-align:left;align-items:flex-start;}
+    .journey-step p{max-width:none;}
+  }
+
+  /* ---------- TRUST / PRIVACY ---------- */
+  .trust-panel{
+    background:var(--surface-sunken);
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:clamp(1.75rem,3vw,2.75rem);
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:clamp(1.75rem,3vw,3rem);
+    align-items:start;
+  }
+  .trust-panel .lockmark{
+    width:3rem;height:3rem;border-radius:14px;
+    background:var(--teal);color:var(--bg);
+    display:grid;place-items:center;
+    margin-bottom:1rem;
+  }
+  .trust-panel .lockmark svg{width:22px;height:22px;}
+  .trust-panel h2{font-size:1.6rem;font-weight:600;max-width:16ch;}
+  .fact-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1.15rem;}
+  .fact-list li{display:flex;gap:.9rem;align-items:flex-start;}
+  .fact-list .dot{
+    flex:none;width:.55rem;height:.55rem;border-radius:50%;
+    background:var(--green);margin-top:.55rem;
+  }
+  .fact-list b{display:block;font-size:.95rem;color:var(--ink);}
+  .fact-list span{font-size:.88rem;color:var(--ink-soft);}
+  .trust-link{
+    display:inline-flex;align-items:center;gap:.35rem;
+    margin-top:1.5rem;
+    font:800 .85rem/1 'Nunito',sans-serif;
+    color:var(--teal-soft);text-decoration:none;
+  }
+  .trust-link svg{width:14px;height:14px;}
+
+  @media (max-width:760px){
+    .trust-panel{grid-template-columns:1fr;}
+  }
+
+  /* ---------- DISCLAIMER / ATTRIBUTION ---------- */
+  .attribution{text-align:center;}
+  .attribution blockquote{
+    margin:0 auto; max-width:52ch;
+    font:italic 500 1.15rem/1.55 'Fraunces',serif;
+    color:var(--teal);
+  }
+  .attribution .byline{
+    margin-top:1.5rem;
+    font-size:.85rem;
+    color:var(--ink-faint);
+    max-width:46ch;
+    margin-inline:auto;
+  }
+
+  /* ---------- DOWNLOAD BAND ---------- */
+  .download-section{padding-top:0;}
+  .download{
+    background:var(--teal);
+    color:var(--bg);
+    border-radius:32px;
+    padding:clamp(2.25rem,4vw,3.5rem);
+    text-align:center;
+  }
+  .download-inner{max-width:640px;margin:0 auto;}
+  .download h2{color:var(--bg);font-size:clamp(1.5rem,1.2rem + 1.2vw,2.1rem);font-weight:600;}
+  .download p{color:color-mix(in srgb, var(--bg) 78%, transparent);margin-top:.75rem;}
+  .download .store-row{justify-content:center;}
+  .download .store-btn{background:color-mix(in srgb, var(--teal) 40%, var(--bg) 12%);border-color:color-mix(in srgb, var(--bg) 30%, transparent);color:var(--bg);}
+  .download .store-btn svg{color:var(--bg);}
+  .download .soon-tag{background:color-mix(in srgb, var(--bg) 18%, transparent);color:var(--bg);}
+  .download .store-btn.is-native{border-color:var(--coral);box-shadow:0 0 0 3px color-mix(in srgb, var(--coral) 30%, transparent);}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border);}
+  footer .wrap{
+    padding-block:2.75rem;
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    gap:2rem;
+  }
+  .foot-brand{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;}
+  .foot-brand img{width:28px;}
+  .foot-brand span{font-family:'Fraunces',serif;font-style:italic;font-weight:600;color:var(--teal);font-size:1.05rem;}
+  footer p{color:var(--ink-faint);font-size:.85rem;max-width:32ch;margin:0;}
+  footer h4{
+    font:800 .78rem/1 'Nunito',sans-serif;
+    letter-spacing:.05em;text-transform:uppercase;
+    color:var(--ink-faint);margin:0 0 .9rem;
+  }
+  footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+  footer a{text-decoration:none;font-size:.92rem;color:var(--ink-soft);display:inline-flex;align-items:center;gap:.45rem;}
+  footer a:hover{color:var(--coral);}
+  footer a svg{width:15px;height:15px;flex:none;}
+  .copyright{
+    border-top:1px solid var(--border);
+    padding-block:1.25rem;
+    text-align:center;
+    font-size:.78rem;
+    color:var(--ink-faint);
+  }
+  @media (max-width:720px){
+    footer .wrap{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <img src="assets/mark.png" alt="">
+      <span>Gelişim Dünyası</span>
+    </a>
+    <a class="nav-cta" href="#indir">Uygulamayı İndir</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">0–6 Yaş · Ebeveynler İçin</span>
+        <h1>Çocuğunuzun gelişim yolculuğunu <em>birlikte</em> izleyin.</h1>
+        <p class="lede">
+          Gelişim basamaklarını, gözlemlerinizi ve ebeveynlik tutumunuzu tek bir
+          rehberde toplayın — hiçbir veri cihazınızın dışına çıkmaz.
+        </p>
+        <span class="trust-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+          Tamamen çevrimdışı · Veriler yalnızca cihazınızda
+        </span>
+        <div class="store-row" id="indir">
+          <a class="store-btn play" href="#indir">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.5"></rect><path d="M9 18h6"></path></svg>
+            <span class="label"><small>Google Play</small>Yakında<span class="soon-tag">Yakında</span></span>
+          </a>
+          <a class="store-btn apple" href="#indir">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.5"></rect><path d="M9 18h6"></path></svg>
+            <span class="label"><small>App Store</small>Yakında<span class="soon-tag">Yakında</span></span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="assets/logo-hero.png" alt="Gelişim Dünyası logosu: gökkuşağı bulmaca parçasına uzanan bir çocuk figürü">
+      </div>
+    </div>
+  </section>
+
+  <section class="journey" id="ozellikler">
+    <div class="wrap">
+      <span class="eyebrow">Uygulamanın Rotası</span>
+      <h2>Beş adımda, tek bir rehber.</h2>
+      <div class="journey-path">
+        <div class="journey-step">
+          <div class="num">1</div>
+          <h3>Gelişim Basamakları</h3>
+          <p>Doğumdan 6 yaşa kadar 9 gelişim alanında, ayına özel kontrol noktalarını işaretleyin.</p>
+        </div>
+        <div class="journey-step">
+          <div class="num">2</div>
+          <h3>Gözlem Rehberi</h3>
+          <p>24 maddelik gözlem listesiyle dikkat çeken durumları alanlara göre gruplayıp yorumlayın.</p>
+        </div>
+        <div class="journey-step">
+          <div class="num">3</div>
+          <h3>Ebeveyn Tutumları</h3>
+          <p>28 soruluk "Kendimi Değerlendir" testiyle 6 tutumdan size en yakın olanı görün.</p>
+        </div>
+        <div class="journey-step">
+          <div class="num">4</div>
+          <h3>Oyun Önerileri</h3>
+          <p>Yaşa uygun yüzlerce oyun fikri arasından güvenlik notlarıyla birlikte ilham alın.</p>
+        </div>
+        <div class="journey-step">
+          <div class="num">5</div>
+          <h3>Gelişim Dosyası</h3>
+          <p>Kaydettiğiniz bulguları tek bir PDF'te birleştirip istediğiniz kanaldan paylaşın.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gizlilik">
+    <div class="wrap">
+      <div class="trust-panel">
+        <div>
+          <div class="lockmark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+          </div>
+          <h2>Verileriniz yalnızca sizin cihazınızda kalır.</h2>
+        </div>
+        <ul class="fact-list">
+          <li>
+            <span class="dot"></span>
+            <div><b>İnternet izni yok</b><span>Uygulamanın internet erişim izni yoktur; teknik olarak veri gönderemez.</span></div>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <div><b>Üçüncü taraf bileşen yok</b><span>Analitik, reklam veya çökme raporlama gibi hiçbir bileşen kullanılmaz.</span></div>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <div><b>Silme tamamen sizin elinizde</b><span>Bir çocuk profilini sildiğinizde, o profile ait tüm kayıtlar cihazınızdan kalıcı olarak silinir.</span></div>
+          </li>
+        </ul>
+      </div>
+      <a class="trust-link" href="gizlilik-politikasi.html">
+        Gizlilik Politikasının tamamı
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </section>
+
+  <section class="attribution">
+    <div class="wrap">
+      <blockquote>
+        "Gelişim Dünyası bir tanı aracı değildir; maddeler kesin ölçüt değildir,
+        her çocuk kendi hızında gelişir. Endişeniz varsa uygulamanın sonucu ne
+        olursa olsun bir uzmana başvurun."
+      </blockquote>
+      <p class="byline">
+        İçerik, Çocuk Gelişimci Büşra Saykın tarafından erken çocukluk gelişimi
+        literatürüne dayanarak özgün olarak hazırlanmıştır.
+        © Çocuk Gelişimci Büşra Saykın — tüm hakları saklıdır.
+      </p>
+    </div>
+  </section>
+
+  <section class="download-section">
+    <div class="wrap">
+      <div class="download">
+        <div class="download-inner">
+          <h2>Uygulama mağaza incelemesi için hazırlanıyor.</h2>
+          <p>Yayınlandığında bu sayfa otomatik güncellenecek — cihazınıza uygun mağazayı aşağıdan takip edebilirsiniz.</p>
+          <div class="store-row">
+            <a class="store-btn play" href="#indir">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.5"></rect><path d="M9 18h6"></path></svg>
+              <span class="label"><small>Google Play</small>Yakında<span class="soon-tag">Yakında</span></span>
+            </a>
+            <a class="store-btn apple" href="#indir">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2.5"></rect><path d="M9 18h6"></path></svg>
+              <span class="label"><small>App Store</small>Yakında<span class="soon-tag">Yakında</span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="foot-brand">
+        <img src="assets/mark.png" alt="">
+        <span>Gelişim Dünyası</span>
+      </div>
+      <p>0-6 yaş çocuklar için ebeveynlere yönelik, tamamen çevrimdışı gelişim rehberi.</p>
+    </div>
+    <div>
+      <h4>Yasal</h4>
+      <ul>
+        <li><a href="kullanim-sartlari.html">Kullanım Şartları</a></li>
+        <li><a href="gizlilik-politikasi.html">Gizlilik Politikası</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>İletişim</h4>
+      <ul>
+        <li><a href="mailto:info@gelisimdunyasi.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+          info@gelisimdunyasi.com
+        </a></li>
+        <li><a href="https://www.instagram.com/gelisimdunyasi__/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1"></circle></svg>
+          @gelisimdunyasi__
+        </a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="copyright">© 2026 Çocuk Gelişimci Büşra Saykın. Tüm hakları saklıdır.</div>
+</footer>
+
+<script>
+(function(){
+  // ---- MAĞAZA BAĞLANTILARI: uygulama yayınlanınca bu iki satırı doldurun ----
+  var PLAY_URL = '';       // örn. 'https://play.google.com/store/apps/details?id=com.gelisimtakip.child_development_app'
+  var APP_STORE_URL = '';  // örn. 'https://apps.apple.com/app/idXXXXXXXXX'
+  // ---------------------------------------------------------------------------
+
+  var ua = navigator.userAgent || '';
+  var isAndroid = /Android/i.test(ua);
+  var isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+  document.querySelectorAll('.store-btn').forEach(function(btn){
+    var isPlay = btn.classList.contains('play');
+    var url = isPlay ? PLAY_URL : APP_STORE_URL;
+    if (url) {
+      btn.href = url;
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+      var tag = btn.querySelector('.soon-tag');
+      if (tag) tag.remove();
+    }
+    if ((isPlay && isAndroid) || (!isPlay && isIOS)) {
+      btn.classList.add('is-native');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
